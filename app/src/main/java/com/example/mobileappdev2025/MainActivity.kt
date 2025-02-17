@@ -25,31 +25,18 @@ class MainActivity : AppCompatActivity() {
     private lateinit var option4: RadioButton
     private lateinit var submitButton: Button
     private lateinit var scoreText: TextView
-
     private var score: Int = 0
-    private var currentPokemonIndex: Int = 0
-    private var isAnswerSubmitted = false
-
+    private var currentPokemonPlace: Int = 0
+    private var isPressed = false
 
     private val pokemonNames = arrayOf("Farigiraf", "Snom", "Lopunny", "Krabby")
-    private val pokemonSilhouettes = arrayOf(
-        R.drawable.farigiraf_shadow,
-        R.drawable.snom_shadow,
-        R.drawable.lopunny_shadow,
-        R.drawable.krabby_shadow
-    )
-    private val pokemonRevealed = arrayOf(
-        R.drawable.farigiraf_revealed,
-        R.drawable.snom_revealed,
-        R.drawable.lopunny_revealed,
-        R.drawable.krabby_revealed
-    )
+    private val pokemonShadows = arrayOf(R.drawable.farigiraf_shadow, R.drawable.snom_shadow, R.drawable.lopunny_shadow, R.drawable.krabby_shadow)
+    private val pokemonRevealed = arrayOf(R.drawable.farigiraf_revealed, R.drawable.snom_revealed, R.drawable.lopunny_revealed, R.drawable.krabby_revealed)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize UI elements
         pokemonImage = findViewById(R.id.pokemon_image)
         radioGroup = findViewById(R.id.radio_group)
         option1 = findViewById(R.id.radioButton)
@@ -59,40 +46,39 @@ class MainActivity : AppCompatActivity() {
         submitButton = findViewById(R.id.submit_button)
         scoreText = findViewById(R.id.score_text)
 
-        loadNewPokemon()
+        shuffleAgain()
 
         submitButton.setOnClickListener {
-            if (!isAnswerSubmitted) {
+            if (!isPressed) {
                 checkAnswer()
             } else {
-                loadNewPokemon()
+                shuffleAgain()
             }
         }
     }
 
-    private fun loadNewPokemon() {
-        isAnswerSubmitted = false
+    private fun shuffleAgain() {
+        isPressed = false
         submitButton.text = "Submit"
         radioGroup.clearCheck()
 
-
         val random = Random()
-        currentPokemonIndex = random.nextInt(pokemonNames.size)
-        pokemonImage.setImageResource(pokemonSilhouettes[currentPokemonIndex])
+        currentPokemonPlace = random.nextInt(4)
+        pokemonImage.setImageResource(pokemonShadows[currentPokemonPlace])
 
 
-        val shuffledOptions = pokemonNames.toList().shuffled()
-        option1.text = shuffledOptions[0]
-        option2.text = shuffledOptions[1]
-        option3.text = shuffledOptions[2]
-        option4.text = shuffledOptions[3]
+        val shuffledName = pokemonNames.toList().shuffled()
+        option1.text = shuffledName[0]
+        option2.text = shuffledName[1]
+        option3.text = shuffledName[2]
+        option4.text = shuffledName[3]
     }
 
     private fun checkAnswer() {
         val selectedRadioButtonId = radioGroup.checkedRadioButtonId
 
         val selectedOption = findViewById<RadioButton>(selectedRadioButtonId).text.toString()
-        val correctAnswer = pokemonNames[currentPokemonIndex]
+        val correctAnswer = pokemonNames[currentPokemonPlace]
 
 
         if (selectedOption == correctAnswer) {
@@ -103,8 +89,8 @@ class MainActivity : AppCompatActivity() {
 
 
         scoreText.text = "Score: $score"
-        pokemonImage.setImageResource(pokemonRevealed[currentPokemonIndex])
+        pokemonImage.setImageResource(pokemonRevealed[currentPokemonPlace])
         submitButton.text = "Next"
-        isAnswerSubmitted = true
+        isPressed = true
     }
 }
