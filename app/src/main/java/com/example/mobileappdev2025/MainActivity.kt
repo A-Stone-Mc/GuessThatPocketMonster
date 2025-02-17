@@ -6,6 +6,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import android.widget.RadioGroup
+import android.widget.RadioButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,84 +16,95 @@ import androidx.core.view.WindowInsetsCompat
 import java.util.Random
 
 class MainActivity : AppCompatActivity() {
-    private var leftNum :Int = 0;
-    private var rightNum :Int = 0;
-    private var score :Int = 0;
+
+    private lateinit var pokemonImage: ImageView
+    private lateinit var radioGroup: RadioGroup
+    private lateinit var option1: RadioButton
+    private lateinit var option2: RadioButton
+    private lateinit var option3: RadioButton
+    private lateinit var option4: RadioButton
+    private lateinit var submitButton: Button
+    private lateinit var scoreText: TextView
+
+    private var score: Int = 0
+    private var currentPokemonIndex: Int = 0
+    private var isAnswerSubmitted = false
+
+
+    private val pokemonNames = arrayOf("Farigiraf", "Snom", "Lopunny", "Krabby")
+    private val pokemonSilhouettes = arrayOf(
+        R.drawable.farigiraf_shadow,
+        R.drawable.snom_shadow,
+        R.drawable.lopunny_shadow,
+        R.drawable.krabby_shadow
+    )
+    private val pokemonRevealed = arrayOf(
+        R.drawable.farigiraf_revealed,
+        R.drawable.snom_revealed,
+        R.drawable.lopunny_revealed,
+        R.drawable.krabby_revealed
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-        // above init layout ui
 
-        pickRandomNumber()
-        setScore(0)
-    }
+        // Initialize UI elements
+        pokemonImage = findViewById(R.id.pokemon_image)
+        radioGroup = findViewById(R.id.radio_group)
+        option1 = findViewById(R.id.radioButton)
+        option2 = findViewById(R.id.radioButton2)
+        option3 = findViewById(R.id.radioButton3)
+        option4 = findViewById(R.id.radioButton4)
+        submitButton = findViewById(R.id.submit_button)
+        scoreText = findViewById(R.id.score_text)
 
-    fun radioButtonOnClick(view: View)
-    {
-        if (view.id == R.id.radioButton){
-            findViewById<TextView>(R.id.score_text).text = "R.id.radioButton"
-        }
+        loadNewPokemon()
 
-        if (view.id == R.id.radioButton2){
-            findViewById<TextView>(R.id.score_text).text = "R.id.radioButton2"
-        }
-
-        if (view.id == R.id.radioButton3){
-            findViewById<TextView>(R.id.score_text).text = "R.id.radioButton3"
+        submitButton.setOnClickListener {
+            if (!isAnswerSubmitted) {
+                checkAnswer()
+            } else {
+                loadNewPokemon()
+            }
         }
     }
 
-    fun leftButtonOnClick(view: View)
-    {
-        if (leftNum > rightNum)
-            setScore(score+1)
-        else
-            setScore(score-1)
+    private fun loadNewPokemon() {
+        isAnswerSubmitted = false
+        submitButton.text = "Submit"
+        radioGroup.clearCheck()
 
-        pickRandomNumber()
+
+        val random = Random()
+        currentPokemonIndex = random.nextInt(pokemonNames.size)
+        pokemonImage.setImageResource(pokemonSilhouettes[currentPokemonIndex])
+
+
+        val shuffledOptions = pokemonNames.toList().shuffled()
+        option1.text = shuffledOptions[0]
+        option2.text = shuffledOptions[1]
+        option3.text = shuffledOptions[2]
+        option4.text = shuffledOptions[3]
     }
 
-    fun rightButtonOnClick(view: View)
-    {
-        if (leftNum < rightNum)
-            setScore(score+1)
-        else
-            setScore(score-1)
+    private fun checkAnswer() {
+        val selectedRadioButtonId = radioGroup.checkedRadioButtonId
 
-        pickRandomNumber()
-    }
+        val selectedOption = findViewById<RadioButton>(selectedRadioButtonId).text.toString()
+        val correctAnswer = pokemonNames[currentPokemonIndex]
 
-    fun pickRandomNumber()
-    {
-        var leftButton = findViewById<Button>(R.id.left_number_button)
-        var rightButton = findViewById<Button>(R.id.right_number_button)
 
-        var rand = Random()
+        if (selectedOption == correctAnswer) {
+            score++
+        } else {
+            score--
+        }
 
-        do {
-            leftNum = rand.nextInt(10)
-            rightNum = rand.nextInt(10)
-        } while (leftNum == rightNum)
 
-        leftButton.text = "$leftNum"
-        rightButton.text = "$rightNum"
-    }
-
-    fun setScore(_score: Int)
-    {
-        score = _score;
-
-        // vari = (condition) ? true : false;
-
-        findViewById<ImageView>(R.id.you_won_image).visibility = if (score > 5) View.VISIBLE else View.INVISIBLE;
-
-        findViewById<TextView>(R.id.score_text).text = "Score: $score"
+        scoreText.text = "Score: $score"
+        pokemonImage.setImageResource(pokemonRevealed[currentPokemonIndex])
+        submitButton.text = "Next"
+        isAnswerSubmitted = true
     }
 }

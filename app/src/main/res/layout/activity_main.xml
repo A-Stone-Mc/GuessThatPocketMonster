@@ -11,90 +11,87 @@
         android:id="@+id/score_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginBottom="150dp"
         android:text="Score: 0"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/left_number_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginBottom="42dp"
-        android:onClick="leftButtonOnClick"
-        android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/right_number_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="14dp"
+        android:id="@+id/submit_button"
+        android:layout_width="108dp"
+        android:layout_height="59dp"
         android:layout_marginBottom="42dp"
-        android:onClick="rightButtonOnClick"
-        android:text="Button"
+        android:backgroundTint="#0AD51E"
+        android:text="Sumbit"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/you_won_image"
-        android:layout_width="248dp"
-        android:layout_height="248dp"
-        android:layout_marginTop="14dp"
-        android:scaleType="centerInside"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/score_text"
-        app:srcCompat="@drawable/awesome_face" />
-
-    <EditText
-        android:id="@+id/edit_text_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:inputType="number"
-        android:text="Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/you_won_image" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/radio_group"
+        android:layout_width="185dp"
+        android:layout_height="190dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="15dp"
         android:checkedButton="@id/radioButton"
-        android:onClick="radioButtonOnClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_number">
+        app:layout_constraintTop_toBottomOf="@+id/pokemon_image">
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="RadioButton"
+            android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="radioButtonOnClick"
-            android:text="RadioButton" />
+            android:text="RadioButton"
+            android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="radioButtonOnClick"
-            android:text="RadioButton" />
+            android:text="RadioButton"
+            android:textSize="20sp" />
 
         <RadioButton
             android:id="@+id/radioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:onClick="radioButtonOnClick"
-            android:text="RadioButton" />
+            android:text="RadioButton"
+            android:textSize="20sp" />
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/pocket_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Guess That Pokemon!"
+        android:textColor="#2A00C1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/pokemon_image"
+        android:layout_width="254dp"
+        android:layout_height="241dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pocket_title"
+        app:srcCompat="@drawable/snom_shadow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
