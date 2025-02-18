@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pokemonImage: ImageView
     private lateinit var radioGroup: RadioGroup
+    private lateinit var radioGroup2: RadioGroup
     private lateinit var option1: RadioButton
     private lateinit var option2: RadioButton
     private lateinit var option3: RadioButton
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         pokemonImage = findViewById(R.id.pokemon_image)
         radioGroup = findViewById(R.id.radio_group)
+        radioGroup2 = findViewById(R.id.radio_group2)
         option1 = findViewById(R.id.radioButton)
         option2 = findViewById(R.id.radioButton2)
         option3 = findViewById(R.id.radioButton3)
@@ -47,6 +49,19 @@ class MainActivity : AppCompatActivity() {
         scoreText = findViewById(R.id.score_text)
 
         shuffleAgain()
+
+        //solution used from stackOverflow
+        radioGroup.setOnCheckedChangeListener { _, _ ->
+            if (radioGroup.checkedRadioButtonId != -1) {
+                radioGroup2.clearCheck()
+            }
+        }
+
+        radioGroup2.setOnCheckedChangeListener { _, _ ->
+            if (radioGroup2.checkedRadioButtonId != -1) {
+                radioGroup.clearCheck()
+            }
+        }
 
         submitButton.setOnClickListener {
             if (!isPressed) {
@@ -61,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         isPressed = false
         submitButton.text = "Submit"
         radioGroup.clearCheck()
+        radioGroup2.clearCheck()
 
         val random = Random()
         currentPokemonPlace = random.nextInt(4)
@@ -75,11 +91,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkAnswer() {
-        val selectedRadioButtonId = radioGroup.checkedRadioButtonId
 
-        val selectedOption = findViewById<RadioButton>(selectedRadioButtonId).text.toString()
+        val selectedOption = when {
+            option1.isChecked -> option1.text.toString()
+            option2.isChecked -> option2.text.toString()
+            option3.isChecked -> option3.text.toString()
+            option4.isChecked -> option4.text.toString()
+            else -> return
+        }
+
         val correctAnswer = pokemonNames[currentPokemonPlace]
-
 
         if (selectedOption == correctAnswer) {
             score++
